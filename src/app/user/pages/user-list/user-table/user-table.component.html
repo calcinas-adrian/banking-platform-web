@@ -1,0 +1,96 @@
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  rel="stylesheet"
+/>
+
+<div class="container-lg">
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white d-flex align-items-center">
+      <i class="bi bi-people-fill fs-3 me-2"></i>
+      <h3 class="mb-0">Lista de Usuarios</h3>
+    </div>
+    <div class="table-responsive">
+      <table
+        class="table table-bordered table-hover table-striped align-middle mb-0 rounded-3 overflow-hidden"
+      >
+        <thead class="table-light">
+          <tr>
+            <th scope="col"><i class="bi bi-person-fill me-1"></i>Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">
+              <i class="bi bi-envelope-at-fill me-1"></i>Email
+            </th>
+            <th scope="col">Fecha de nacimiento</th>
+            <th scope="col">Género</th>
+            <th scope="col"><i class="bi bi-wallet2 me-1"></i>Cuenta(s)</th>
+            <th scope="col">Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of userList(); track $index) {
+          <tr>
+            <td class="fw-semibold text-danger-emphasis">
+              {{ user.profile?.name }}
+            </td>
+            <td>{{ user.profile?.lastName }}</td>
+            <td class="text-break">{{ user.email }}</td>
+            <td>
+              <span class="badge bg-light text-dark border border-1">
+                {{ user.profile?.birthDate | date : "yyyy-MM-dd" }}
+              </span>
+            </td>
+            <td>
+              <span class="badge bg-info text-dark">
+                {{ user.profile?.gender }}
+              </span>
+            </td>
+            <td>
+              @if (user.accounts && user.accounts.length > 0) {
+              <ul class="list-unstyled mb-0">
+                @for (account of user.accounts; track $index) {
+                <li class="mb-2 border-bottom pb-1">
+                  <i
+                    class="bi bi-credit-card-2-front-fill me-1 text-success"
+                  ></i>
+                  <strong>Número:</strong> {{ account.number }}<br />
+                  <strong>Tipo:</strong> {{ account.type }}<br />
+                  <strong>Saldo:</strong>
+                  <span class="text-success">${{ account.saldo }}</span>
+                </li>
+                }
+              </ul>
+              } @else {
+              <span class="text-muted">Sin cuentas</span>
+              }
+            </td>
+            <td>
+              <div class="btn-group" role="group">
+                <button
+                  class="btn btn-sm btn-outline-warning"
+                  title="Editar"
+                  (click)="user.id !== undefined && sendToEdit(user.id)"
+                  [disabled]="user.id === undefined"
+                >
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  title="Eliminar"
+                  (click)="user.id !== undefined && deleteUser(user.id)"
+                  [disabled]="user.id === undefined"
+                >
+                  <i class="bi bi-trash3-fill"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

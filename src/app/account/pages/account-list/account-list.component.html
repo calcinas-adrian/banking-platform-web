@@ -1,0 +1,27 @@
+<div class="container py-4 d-flex align-items-start gap-4">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div
+      class="card-header bg-gradient bg-primary text-white text-center rounded-top-4"
+    >
+      <h2 class="mb-0">
+        <i class="bi bi-credit-card-2-front-fill me-2"></i>
+        Listado de Cuentas
+      </h2>
+    </div>
+    <div class="card-body p-0">
+      <app-account-table-list [accountList]="accountList()" />
+    </div>
+  </div>
+
+  <div class="card shadow border-0 mx-auto" style="max-width: 450px">
+    <div class="card-header bg-success text-white text-center">
+      <h2 class="mb-0">
+        <i class="bi bi-plus-circle me-2"></i>
+        Crear Cuenta
+      </h2>
+    </div>
+    <div class="card-body p-4">
+      <app-create-account />
+    </div>
+  </div>
+</div>

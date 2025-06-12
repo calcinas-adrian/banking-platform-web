@@ -1,0 +1,27 @@
+<div class="d-flex flex-column flex-lg-row justify-content-start gap-3">
+  <div>
+    @if (error()) {
+    <div class="alert alert-danger" role="alert">
+      {{ error() }}
+    </div>
+    } @if (loading()) {
+    <div class="d-flex justify-content-center my-4">
+      <div class="spinner-border text-primary me-2" role="status"></div>
+      <strong>Cargando usuarios...</strong>
+    </div>
+    }
+
+    <section class="mb-5">
+      <app-user-form (userCreated)="onUserCreated($event)"></app-user-form>
+    </section>
+  </div>
+
+  <div>
+    <app-user-table
+      [userList]="userList()"
+      (isLoading)="loading.set($event)"
+      (error)="error.set($event)"
+      (newUserList)="userList.set($event)"
+    ></app-user-table>
+  </div>
+</div>

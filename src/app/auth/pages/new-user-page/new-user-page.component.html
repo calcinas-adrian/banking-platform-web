@@ -1,0 +1,300 @@
+<div
+  class="d-flex align-items-center justify-content-center"
+  style="
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+  "
+>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 col-xxl-3">
+        <div
+          class="card shadow-lg border-0 rounded-4"
+          style="max-width: 750px; margin: 0 auto"
+        >
+          <div
+            class="card-header text-white text-center py-4 border-0 rounded-top-4"
+            style="
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            "
+          >
+            <div class="mb-3">
+              <i class="bi bi-person-plus-fill" style="font-size: 3rem"></i>
+            </div>
+            <h2 class="mb-1 fw-bold">Crear Cuenta</h2>
+            <p class="mb-0 opacity-75">Únete a nuestra comunidad</p>
+          </div>
+          <div class="card-body p-4">
+            <form autocomplete="off">
+              <!-- Nombre y Apellido -->
+              <div class="row g-2 mb-3">
+                <div class="col-md-6">
+                  <label for="nombre" class="form-label fw-semibold text-dark">
+                    <i class="bi bi-person-fill text-primary me-2"></i>Nombre
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control form-control-lg rounded-3 shadow-sm"
+                    id="nombre"
+                    name="nombre"
+                    required
+                    maxlength="30"
+                    placeholder="Tu nombre"
+                    style="border: 2px solid #e9ecef; transition: all 0.3s ease"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="apellido"
+                    class="form-label fw-semibold text-dark"
+                  >
+                    <i class="bi bi-person-badge-fill text-primary me-2"></i
+                    >Apellido
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control form-control-lg rounded-3 shadow-sm"
+                    id="apellido"
+                    name="apellido"
+                    required
+                    maxlength="30"
+                    placeholder="Tu apellido"
+                    style="border: 2px solid #e9ecef; transition: all 0.3s ease"
+                  />
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="mb-3">
+                <label for="email" class="form-label fw-semibold text-dark">
+                  <i class="bi bi-envelope-at-fill text-primary me-2"></i>Correo
+                  Electrónico
+                </label>
+                <input
+                  type="email"
+                  class="form-control form-control-lg rounded-3 shadow-sm"
+                  id="email"
+                  name="email"
+                  required
+                  placeholder="ejemplo@correo.com"
+                  style="border: 2px solid #e9ecef; transition: all 0.3s ease"
+                />
+              </div>
+
+              <!-- Contraseña -->
+              <div class="mb-3">
+                <label for="password" class="form-label fw-semibold text-dark">
+                  <i class="bi bi-lock-fill text-primary me-2"></i>Contraseña
+                </label>
+                <input
+                  type="password"
+                  class="form-control form-control-lg rounded-3 shadow-sm"
+                  id="password"
+                  name="password"
+                  required
+                  minlength="6"
+                  placeholder="Mínimo 6 caracteres"
+                  style="border: 2px solid #e9ecef; transition: all 0.3s ease"
+                />
+                <div class="form-text mt-2">
+                  <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>Usa al menos 6
+                    caracteres con letras y números.
+                  </small>
+                </div>
+              </div>
+
+              <!-- Fecha de nacimiento y Género -->
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label
+                    for="nacimiento"
+                    class="form-label fw-semibold text-dark"
+                  >
+                    <i class="bi bi-calendar-date text-primary me-2"></i>Fecha
+                    de nacimiento
+                  </label>
+                  <input
+                    type="date"
+                    class="form-control form-control-lg rounded-3 shadow-sm"
+                    id="nacimiento"
+                    name="nacimiento"
+                    required
+                    style="border: 2px solid #e9ecef; transition: all 0.3s ease"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="genero" class="form-label fw-semibold text-dark">
+                    <i class="bi bi-gender-ambiguous text-primary me-2"></i
+                    >Género
+                  </label>
+                  <select
+                    class="form-select form-select-lg rounded-3 shadow-sm"
+                    id="genero"
+                    name="genero"
+                    required
+                    style="border: 2px solid #e9ecef; transition: all 0.3s ease"
+                  >
+                    <option value="" disabled selected>
+                      Selecciona tu género
+                    </option>
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="otro">Otro</option>
+                    <option value="prefiero-no-decirlo">
+                      Prefiero no decirlo
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Términos y condiciones -->
+              <div class="mb-4">
+                <div class="form-check d-flex align-items-start">
+                  <input
+                    class="form-check-input mt-1 me-3"
+                    type="checkbox"
+                    id="terminos"
+                    required
+                    style="transform: scale(1.2)"
+                  />
+                  <label class="form-check-label text-muted" for="terminos">
+                    Acepto los
+                    <a
+                      href="#"
+                      class="text-primary text-decoration-none fw-semibold"
+                      >términos y condiciones</a
+                    >
+                    y la
+                    <a
+                      href="#"
+                      class="text-primary text-decoration-none fw-semibold"
+                      >política de privacidad</a
+                    >
+                  </label>
+                </div>
+              </div>
+
+              <!-- Botón registrar -->
+              <div class="d-grid mb-3">
+                <button
+                  type="submit"
+                  class="btn btn-lg py-3 text-white fw-bold border-0 rounded-3 shadow"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #667eea 0%,
+                      #764ba2 100%
+                    );
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                  "
+                  onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.6)';"
+                  onmouseout="this.style.transform='translateY(0px)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.4)';"
+                >
+                  <i class="bi bi-person-check-fill me-2"></i>Crear mi cuenta
+                </button>
+              </div>
+            </form>
+          </div>
+          <div
+            class="card-footer text-center py-4 bg-light border-0 rounded-bottom-4"
+          >
+            <p class="mb-3 text-muted">¿Ya tienes una cuenta?</p>
+            <a
+              [routerLink]="['/auth/login']"
+              class="btn btn-outline-primary rounded-pill px-4 py-2 text-decoration-none fw-semibold shadow-sm"
+              style="transition: all 0.3s ease"
+              onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';"
+              onmouseout="this.style.transform='translateY(0px)'; this.style.boxShadow='0 2px 6px rgba(0,0,0,0.1)';"
+            >
+              <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+  }
+
+  .form-control:hover,
+  .form-select:hover {
+    border-color: #667eea !important;
+  }
+
+  .form-check-input:checked {
+    background-color: #667eea !important;
+    border-color: #667eea !important;
+  }
+
+  /* Pantallas pequeñas (móviles) */
+  @media (max-width: 768px) {
+    .card-body {
+      padding: 2rem 1.5rem !important;
+    }
+
+    .container-fluid {
+      padding: 1rem !important;
+    }
+
+    .card {
+      margin: 1rem !important;
+    }
+  }
+
+  /* Pantallas medianas (tablets) */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .card-body {
+      padding: 2.5rem !important;
+    }
+
+    .card {
+      max-width: 450px !important;
+    }
+  }
+
+  /* Pantallas grandes (desktop) */
+  @media (min-width: 1025px) {
+    .card-body {
+      padding: 3rem 2.5rem !important;
+    }
+
+    .card {
+      max-width: 480px !important;
+    }
+
+    .form-control-lg,
+    .form-select-lg {
+      font-size: 1rem !important;
+      padding: 0.75rem 1rem !important;
+    }
+  }
+
+  /* Pantallas extra grandes (large desktop) */
+  @media (min-width: 1400px) {
+    .card {
+      max-width: 500px !important;
+    }
+
+    .card-body {
+      padding: 3.5rem 3rem !important;
+    }
+  }
+
+  /* Mejora para el contenedor principal */
+  .container-fluid {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Mejora para la tarjeta en pantallas muy grandes */
+  .card {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+  }
+</style>

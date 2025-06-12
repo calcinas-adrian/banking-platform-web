@@ -1,0 +1,116 @@
+<div class="container py-5">
+  <!-- Información del Usuario -->
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold text-primary">
+      <i class="bi bi-person-circle me-2"></i>Información del Usuario
+    </h1>
+    <hr class="w-25 mx-auto mb-4 border-primary" />
+
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 600px">
+      <div class="card-body bg-light rounded">
+        <table class="table table-borderless mb-0">
+          <tbody>
+            <tr>
+              <th scope="row" class="text-start w-50">ID</th>
+              <td class="text-end">{{ user()?.id }}</td>
+            </tr>
+            <tr>
+              <th scope="row" class="text-start">Email</th>
+              <td class="text-end">{{ user()?.email }}</td>
+            </tr>
+            <tr>
+              <th scope="row" class="text-start">Contraseña</th>
+              <td class="text-end">{{ user()?.password }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Perfil y Cuentas -->
+  <div class="row g-4">
+    <!-- Perfil -->
+    <div class="col-md-6">
+      <div class="card border-0 shadow">
+        @if (user()?.profile) {
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="bi bi-person-lines-fill me-2"></i>Perfil
+          </h5>
+        </div>
+
+        <div class="card-body bg-light">
+          <table class="table table-hover table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th>ID</th>
+                <td>{{ user()?.profile?.id }}</td>
+              </tr>
+              <tr>
+                <th>Nombre</th>
+                <td>{{ user()?.profile?.name }}</td>
+              </tr>
+              <tr>
+                <th>Apellido</th>
+                <td>{{ user()?.profile?.lastName }}</td>
+              </tr>
+              <tr>
+                <th>Fecha de Nacimiento</th>
+                <td>{{ user()?.profile?.birthDate }}</td>
+              </tr>
+              <tr>
+                <th>Género</th>
+                <td>{{ user()?.profile?.gender }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Cuentas -->
+    <div class="col-md-6">
+      <div class="card border-0 shadow">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">
+            <i class="bi bi-wallet2 me-2"></i>Cuentas Bancarias
+          </h5>
+        </div>
+        <div class="card-body bg-light">
+          <table class="table table-striped mb-0">
+            <tbody>
+              @for (account of user()?.accounts; track account.id) {
+              <tr>
+                <th>ID</th>
+                <td>{{ account.id }}</td>
+              </tr>
+              <tr>
+                <th>Número</th>
+                <td>{{ account.number }}</td>
+              </tr>
+              <tr>
+                <th>Saldo</th>
+                <td>${{ account.saldo }}</td>
+              </tr>
+              <tr>
+                <th>Tipo</th>
+                <td>{{ account.type }}</td>
+              </tr>
+              <tr class="table-active">
+                <td colspan="2" class="p-1"></td>
+              </tr>
+              } @empty {
+              <tr class="table-danger">
+                <th>ATENCIÓN</th>
+                <td>{{ user()?.profile?.name }} no tiene cuentas activas</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
