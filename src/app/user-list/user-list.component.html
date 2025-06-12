@@ -1,0 +1,66 @@
+<p>Lista de usuarios</p>
+
+@if (error()) {
+  <div style="color: red; margin-bottom: 20px; padding: 10px; border: 1px solid red; border-radius: 4px;">
+    {{ error() }}
+  </div>
+}
+
+@if (loading()) {
+  <div style="text-align: center; margin: 20px;">
+    <p>Cargando usuarios...</p>
+  </div>
+}
+
+<section style="display: flex; justify-content: center; margin-bottom: 35px">
+  <app-user-form (userCreated)="onUserCreated($event)"></app-user-form>
+</section>
+
+
+<table border="1">
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>Email</th>
+    <th>Fecha de nacimiento</th>
+    <th>Género</th>
+    <th>Cuenta(s)</th>
+    <th>Opciones</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (user of userList(); track $index) {
+      <tr>
+        <td>{{ user.profile.name }}</td>
+        <td>{{ user.profile.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.profile.birthDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ user.profile.gender }}</td>
+        <td>
+          @if (user.accounts.length > 0) {
+            <ul>
+              @for (account of user.accounts; track $index) {
+                <li>
+                  Número: {{ account.number }}<br>
+                  Tipo: {{ account.type }}<br>
+                  Saldo: ${{ account.saldo }}
+                </li>
+              }
+            </ul>
+          } @else {
+            Sin cuentas
+          }
+        </td>
+        <td>
+          <button (click)="sendToEdit(user.id)">
+            Editar
+          </button>
+          <button (click)="deleteUser(user.id)">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
