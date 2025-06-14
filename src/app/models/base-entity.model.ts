@@ -3,5 +3,5 @@ export interface BaseEntity {
   addUser?: string;
   changeDate?: Date;
   changeUser?: string;
-  deleted: boolean;
+  deleted?: boolean;
 }
