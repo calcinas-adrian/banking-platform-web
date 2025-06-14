@@ -7,7 +7,7 @@ import type { Beneficiary } from './beneficiary.model';
 export interface User extends BaseEntity {
   id?: number;
   email: string;
-  password: string;
+  password?: string;
   profile?: Profile;
   rol?: Rol;
   accounts?: Account[];
