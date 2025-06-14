@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { UserService } from '../../../service/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,6 +14,8 @@ export default class LoginPageComponent {
     email: '',
     password: '',
   });
+
+  errorMessage = signal('');
 
   router = inject(Router);
   private userService = inject(UserService);
@@ -31,8 +33,14 @@ export default class LoginPageComponent {
       .login(email, password)
       .pipe(
         tap(() => localStorage.setItem('email', email)),
-        tap(() => this.router.navigate(['/user']))
+        tap(() => this.router.navigate(['/user'])),
+        catchError((error) => {
+          this.errorMessage.set(error.error.message)
+          return of(null);
+        })
       )
-      .subscribe();
+      .subscribe((resp) => {
+        console.log('Login successful', resp);
+      });
   }
 }

@@ -26,6 +26,6 @@ export class UserService {
   }
 
   login(email: string, password: string) {
-    return this.http.post(`${this.ApiUrl}/users/login`, { email, password });
+    return this.http.post(`${this.ApiUrl}/api/v1/users/login`, { email, password });
   }
 }

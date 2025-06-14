@@ -68,6 +68,7 @@
               >
                 <div class="form-check">
                   <input
+                    tabindex="-1"
                     class="form-check-input"
                     type="checkbox"
                     id="rememberMe"
@@ -78,12 +79,22 @@
                   </label>
                 </div>
                 <a
+                  tabindex="-1"
                   href="#"
                   class="text-primary text-decoration-none fw-semibold small"
                 >
                   ¿Olvidaste tu contraseña?
                 </a>
               </div>
+
+              <!-- Mensaje de error -->
+              @if (errorMessage()){
+              <div class="alert alert-danger" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                {{ errorMessage() }}
+              </div>
+
+              }
 
               <!-- Botón -->
               <div class="d-grid mb-4">
