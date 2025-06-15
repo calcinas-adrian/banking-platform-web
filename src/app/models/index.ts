@@ -10,6 +10,7 @@ export type { CreateUserRequest } from './dto';
 
 export type { 
   AccountTableResponse,
+  BeneficiaryTableResponse,
   GetProfileByIDResponse,
   GetUserByEmailResponse,
   LoginSuccesfullyResponse 

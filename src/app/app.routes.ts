@@ -53,6 +53,36 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'beneficiaries',
+    loadComponent: () =>
+      import('./beneficiary/pages/beneficiary-page/beneficiary-page.component'),
+    children: [
+      {
+        path: 'list',
+        loadComponent: () =>
+          import(
+            './beneficiary/pages/beneficiary-list/beneficiary-list.component'
+          ),
+      },
+      // {
+      //   path: 'edit',
+      //   // loadComponent: () =>
+      //   //   import('./account/pages/account-edit/account-edit.component'),
+      // },
+      {
+        path: ':id',
+        loadComponent: () =>
+          import(
+            './beneficiary/pages/beneficiary-detail/beneficiary-detail.component'
+          ),
+      },
+      {
+        path: '**',
+        redirectTo: '/list',
+      },
+    ],
+  },
+  {
     path: 'auth',
     loadComponent: () => import('./auth/pages/auth-page/auth-page.component'),
     children: [

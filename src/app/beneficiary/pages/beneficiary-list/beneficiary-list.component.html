@@ -1,0 +1,37 @@
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="fw-bold text-success mb-1">
+            <i class="bi bi-people-fill me-2"></i>
+            Gestión de Beneficiarios
+          </h2>
+          <p class="text-muted mb-0">
+            Administra y visualiza todos los beneficiarios registrados
+          </p>
+        </div>
+        <button class="btn btn-success">
+          <i class="bi bi-person-plus-fill me-2"></i>
+          Nuevo Beneficiario
+        </button>
+      </div>
+
+      @if (isLoading()) {
+      <div class="text-center py-5">
+        <div class="spinner-border text-success" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-3 text-muted">Cargando beneficiarios...</p>
+      </div>
+      } @else if (error()) {
+      <div class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        {{ error() }}
+      </div>
+      } @else {
+      <app-beneficiary-table-list [beneficiaryList]="beneficiaries()" />
+      }
+    </div>
+  </div>
+</div>

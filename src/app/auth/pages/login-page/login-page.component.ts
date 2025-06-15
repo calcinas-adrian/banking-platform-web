@@ -38,7 +38,7 @@ export default class LoginPageComponent {
         })
       )
       .subscribe((resp) => {
-        console.log('Login successful', resp);
+        // console.log('Login successful', resp);
         if (!resp || !resp.id) {
           return;
         }
@@ -56,7 +56,7 @@ export default class LoginPageComponent {
           return;
         }
 
-        this.router.navigate(['/user/details', resp.id]);
+        this.router.navigate(['/user/details']);
       });
   }
 }

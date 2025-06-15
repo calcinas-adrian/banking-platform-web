@@ -1,6 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { KeyValuePipe } from '@angular/common';
 import { AccountTableResponse } from '../../../../models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-table-list',
@@ -9,7 +10,12 @@ import { AccountTableResponse } from '../../../../models';
   styleUrl: './account-table-list.component.css',
 })
 export class AccountTableListComponent {
+  private router = inject(Router);
   accountList = input.required<AccountTableResponse[]>();
+
+  showBeneficiariesDetails() {
+    this.router.navigate(['/beneficiaries/list']);
+  }
 
   /**
    * Obtiene las iniciales del nombre y apellido

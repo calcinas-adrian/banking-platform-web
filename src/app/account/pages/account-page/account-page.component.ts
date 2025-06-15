@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   Router,
   RouterLink,
@@ -11,8 +11,10 @@ import {
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './account-page.component.html',
 })
-export default class AccountPageComponent {
+export default class AccountPageComponent implements OnInit {
   private router = inject(Router);
+
+  email = signal<string>('??');
 
   listLinks = [
     {
@@ -28,6 +30,16 @@ export default class AccountPageComponent {
       url: '/user',
     },
   ];
+
+  ngOnInit(): void {
+    const email = localStorage.getItem('email');
+    if (!email) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.email.set(email);
+  }
 
   handleLogout() {
     localStorage.clear();
