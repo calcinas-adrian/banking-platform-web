@@ -7,7 +7,7 @@ import { UserService } from '../../../../service/user.service';
 
 @Component({
   selector: 'app-user-table',
-  imports: [DatePipe],
+  // imports: [DatePipe],
   templateUrl: './user-table.component.html',
   styleUrl: './user-table.component.css',
 })

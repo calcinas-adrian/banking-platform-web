@@ -7,3 +7,10 @@ export type { Transaction } from './transaction.model';
 export type { User } from './user.model';
 
 export type { CreateUserRequest } from './dto';
+
+export type { 
+  AccountTableResponse,
+  GetProfileByIDResponse,
+  GetUserByEmailResponse,
+  LoginSuccesfullyResponse 
+} from './dto.response';

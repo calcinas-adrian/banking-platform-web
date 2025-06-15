@@ -1,9 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { AccountTableListComponent } from './account-table-list/account-table-list.component';
-import { Account } from '../../../models';
+import { Account, AccountTableResponse } from '../../../models';
 import { AccountService } from '../../../service/account.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-account-list',
@@ -11,13 +13,21 @@ import { AccountService } from '../../../service/account.service';
   templateUrl: './account-list.component.html',
 })
 export default class AccountListComponent implements OnInit {
-  accountList = signal<Account[]>([]);
+  id = toSignal(
+    inject(ActivatedRoute).params.pipe(map((params) => +params['userId']))
+  );
+
+  accountList = signal<AccountTableResponse[]>([]);
 
   private accountService = inject(AccountService);
 
   ngOnInit(): void {
+    const userId = this.id();
+    if (!userId || isNaN(userId)) {
+      return;
+    }
     this.accountService
-      .getAll()
+      .getByUser(userId)
       .pipe(tap((accounts) => this.accountList.set(accounts)))
       .subscribe();
   }

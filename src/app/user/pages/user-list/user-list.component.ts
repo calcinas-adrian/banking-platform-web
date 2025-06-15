@@ -27,21 +27,21 @@ export default class UserListComponent implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
-    this.userService
-      .save(userData)
-      .pipe(
-        switchMap(() => this.userService.getAll()),
-        tap((users) => {
-          this.userList.set(users);
-          this.loading.set(false);
-        }),
-        catchError((error) => {
-          this.error.set(`Error al crear el usuario: ${error.message}`);
-          this.loading.set(false);
-          return of([]);
-        })
-      )
-      .subscribe();
+    // this.userService
+    //   .save(userData)
+    //   .pipe(
+    //     switchMap(() => this.userService.getAll()),
+    //     tap((users) => {
+    //       this.userList.set(users);
+    //       this.loading.set(false);
+    //     }),
+    //     catchError((error) => {
+    //       this.error.set(`Error al crear el usuario: ${error.message}`);
+    //       this.loading.set(false);
+    //       return of([]);
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   private loadUsers(): void {

@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Account, User } from '../models';
+import { Account, AccountTableResponse } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  private ApiUrl = 'http://localhost:8080';
+  private ApiUrl = 'http://localhost:8080/api/v1';
   private http = inject(HttpClient);
 
   getAll() {
@@ -29,6 +29,12 @@ export class AccountService {
     return this.http.put<Account>(
       `${this.ApiUrl}/account/${account.id}`,
       account
+    );
+  }
+
+  getByUser(userId: number) {
+    return this.http.get<AccountTableResponse[]>(
+      `${this.ApiUrl}/account/user/${userId}`
     );
   }
 }

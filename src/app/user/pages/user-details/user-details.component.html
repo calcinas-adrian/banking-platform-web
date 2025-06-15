@@ -12,15 +12,11 @@
           <tbody>
             <tr>
               <th scope="row" class="text-start w-50">ID</th>
-              <td class="text-end">{{ user()?.id }}</td>
+              <td class="text-end">{{ user().id }}</td>
             </tr>
             <tr>
               <th scope="row" class="text-start">Email</th>
-              <td class="text-end">{{ user()?.email }}</td>
-            </tr>
-            <tr>
-              <th scope="row" class="text-start">Contraseña</th>
-              <td class="text-end">{{ user()?.password }}</td>
+              <td class="text-end">{{ user().email }}</td>
             </tr>
           </tbody>
         </table>
@@ -33,7 +29,7 @@
     <!-- Perfil -->
     <div class="col-md-6">
       <div class="card border-0 shadow">
-        @if (user()?.profile) {
+        @if (user().profile) {
         <div class="card-header bg-primary text-white">
           <h5 class="mb-0">
             <i class="bi bi-person-lines-fill me-2"></i>Perfil
@@ -45,23 +41,25 @@
             <tbody>
               <tr>
                 <th>ID</th>
-                <td>{{ user()?.profile?.id }}</td>
+                <td>{{ user().profile?.id }}</td>
               </tr>
               <tr>
-                <th>Nombre</th>
-                <td>{{ user()?.profile?.name }}</td>
+                <th>Nombre Completo</th>
+                <td>{{ user().profile?.name }}</td>
               </tr>
               <tr>
-                <th>Apellido</th>
-                <td>{{ user()?.profile?.lastName }}</td>
+                <th>Numero de celular</th>
+                <td>
+                  {{ user().profile?.mobile }}
+                </td>
               </tr>
               <tr>
-                <th>Fecha de Nacimiento</th>
-                <td>{{ user()?.profile?.birthDate }}</td>
+                <th>Carnet de Identidad</th>
+                <td>{{ user().profile?.ci }}</td>
               </tr>
               <tr>
-                <th>Género</th>
-                <td>{{ user()?.profile?.gender }}</td>
+                <th>Estado</th>
+                <td>{{ user().profile?.status }}</td>
               </tr>
             </tbody>
           </table>
@@ -73,26 +71,41 @@
     <!-- Cuentas -->
     <div class="col-md-6">
       <div class="card border-0 shadow">
-        <div class="card-header bg-success text-white">
+        <div
+          class="card-header bg-success text-white d-flex justify-content-between align-items-center"
+        >
           <h5 class="mb-0">
             <i class="bi bi-wallet2 me-2"></i>Cuentas Bancarias
           </h5>
+
+          <button class="btn btn-outline-light btn-sm"
+            (click)="showAccountsDetails()"
+          >
+            <span>Ver Detalles de Cuentas</span>
+            <i class="bi bi-arrow-right-short ms-1"></i>
+          </button>
         </div>
         <div class="card-body bg-light">
           <table class="table table-striped mb-0">
-            <tbody>
-              @for (account of user()?.accounts; track account.id) {
+            @for (account of user().accounts; track account.id) {
+            <tbody
+              [class]="{
+                'table-success': account?.status === 'ACTIVE',
+                'table-warning': account?.status === 'SUSPENDED',
+                'table-danger': account?.status === 'CLOSED'
+              }"
+            >
               <tr>
-                <th>ID</th>
-                <td>{{ account.id }}</td>
+                <th>Moneda</th>
+                <td>{{ account.currency }}</td>
               </tr>
               <tr>
                 <th>Número</th>
-                <td>{{ account.number }}</td>
+                <td>{{ account.accountNumber }}</td>
               </tr>
               <tr>
                 <th>Saldo</th>
-                <td>${{ account.saldo }}</td>
+                <td>${{ account.balance }}</td>
               </tr>
               <tr>
                 <th>Tipo</th>
@@ -101,13 +114,15 @@
               <tr class="table-active">
                 <td colspan="2" class="p-1"></td>
               </tr>
-              } @empty {
+            </tbody>
+            } @empty {
+            <tbody>
               <tr class="table-danger">
                 <th>ATENCIÓN</th>
-                <td>{{ user()?.profile?.name }} no tiene cuentas activas</td>
+                <td>{{ user().profile?.name }} no tiene cuentas activas</td>
               </tr>
-              }
             </tbody>
+            }
           </table>
         </div>
       </div>

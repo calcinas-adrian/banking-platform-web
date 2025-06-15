@@ -16,7 +16,7 @@ export const routes: Routes = [
           import('./user/pages/user-list/user-list.component'),
       },
       {
-        path: 'details/:id',
+        path: 'details',
         loadComponent: () =>
           import('./user/pages/user-details/user-details.component'),
       },
@@ -32,7 +32,7 @@ export const routes: Routes = [
       import('./account/pages/account-page/account-page.component'),
     children: [
       {
-        path: 'list',
+        path: 'list/:userId',
         loadComponent: () =>
           import('./account/pages/account-list/account-list.component'),
       },

@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from '../../../service/user.service';
-import { tap } from 'rxjs';
 import { User } from '../../../models';
 
 @Component({
@@ -10,20 +9,28 @@ import { User } from '../../../models';
   templateUrl: './user-details.component.html',
 })
 export default class UserComponent implements OnInit {
-  user = signal<User | undefined>(undefined);
-
+  private router = inject(Router);
   private userService = inject(UserService);
-  private activatedRoute = inject(ActivatedRoute);
+
+  user = signal<User>({} as User);
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((params) => {
-      const id = +params['id'];
-      if (id > 0) {
-        this.userService
-          .getById(id)
-          .pipe(tap((user) => this.user.set(user)))
-          .subscribe();
-      }
-    });
+    const email = localStorage.getItem('email');
+    if (!email) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
+    this.userService
+      .getUserByEmail(email)
+      .subscribe((user) => this.user.set(user));
+  }
+
+  showAccountsDetails() {
+    if (!this.user().id) {
+      return;
+    }
+
+    this.router.navigate(['/account/list', this.user().id]);
   }
 }

@@ -40,12 +40,12 @@
             <td class="text-break">{{ user.email }}</td>
             <td>
               <span class="badge bg-light text-dark border border-1">
-                {{ user.profile?.birthDate | date : "yyyy-MM-dd" }}
+                <!-- {{ user.profile?.birthDate | date : "yyyy-MM-dd" }} -->
               </span>
             </td>
             <td>
               <span class="badge bg-info text-dark">
-                {{ user.profile?.gender }}
+                <!-- {{ user.profile?.gender }} -->
               </span>
             </td>
             <td>
@@ -56,10 +56,10 @@
                   <i
                     class="bi bi-credit-card-2-front-fill me-1 text-success"
                   ></i>
-                  <strong>Número:</strong> {{ account.number }}<br />
+                  <strong>Número:</strong> {{ account.accountNumber }}<br />
                   <strong>Tipo:</strong> {{ account.type }}<br />
                   <strong>Saldo:</strong>
-                  <span class="text-success">${{ account.saldo }}</span>
+                  <span class="text-success">${{ account.balance }}</span>
                 </li>
                 }
               </ul>

@@ -32,15 +32,31 @@ export default class LoginPageComponent {
     this.userService
       .login(email, password)
       .pipe(
-        tap(() => localStorage.setItem('email', email)),
-        tap(() => this.router.navigate(['/user'])),
         catchError((error) => {
-          this.errorMessage.set(error.error.message)
+          this.errorMessage.set(error.error.message);
           return of(null);
         })
       )
       .subscribe((resp) => {
         console.log('Login successful', resp);
+        if (!resp || !resp.id) {
+          return;
+        }
+
+        this.errorMessage.set('');
+        localStorage.setItem('email', email);
+
+        if (resp.rol.name === 'Administrador') {
+          this.router.navigate(['/admin']);
+          return;
+        }
+
+        if (resp.rol.name === 'Operador') {
+          this.router.navigate(['/admin']);
+          return;
+        }
+
+        this.router.navigate(['/user/details', resp.id]);
       });
   }
 }
