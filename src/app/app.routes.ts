@@ -64,11 +64,13 @@ export const routes: Routes = [
             './beneficiary/pages/beneficiary-list/beneficiary-list.component'
           ),
       },
-      // {
-      //   path: 'edit',
-      //   // loadComponent: () =>
-      //   //   import('./account/pages/account-edit/account-edit.component'),
-      // },
+      {
+        path: 'edit/:id',
+        loadComponent: () =>
+          import(
+            './beneficiary/pages/beneficiary-edit/beneficiary-edit.component'
+          ),
+      },
       {
         path: ':id',
         loadComponent: () =>
@@ -78,7 +80,7 @@ export const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: '/list',
+        redirectTo: 'list',
       },
     ],
   },

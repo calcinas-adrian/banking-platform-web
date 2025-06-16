@@ -1,0 +1,190 @@
+<div class="container-fluid py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white py-3">
+          <h4 class="card-title mb-0">
+            <i class="fas fa-user-plus me-2"></i>
+            Agregar Nuevo Beneficiario
+          </h4>
+        </div>
+
+        <div class="card-body p-4">
+          <!-- Mensajes de estado -->
+          <div
+            *ngIf="error()"
+            class="alert alert-danger d-flex align-items-center mb-4"
+            role="alert"
+          >
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <div>{{ error() }}</div>
+          </div>
+
+          <div
+            *ngIf="successMessage()"
+            class="alert alert-success d-flex align-items-center mb-4"
+            role="alert"
+          >
+            <i class="fas fa-check-circle me-2"></i>
+            <div>{{ successMessage() }}</div>
+          </div>
+
+          <!-- Formulario -->
+          <form
+            [formGroup]="beneficiaryForm"
+            (ngSubmit)="saveBeneficiary()"
+            novalidate
+          >
+            <!-- Campo Account Number con Datalist -->
+            <div class="mb-4">
+              <label for="accountNumber" class="form-label fw-semibold">
+                <i class="fas fa-credit-card me-1 text-primary"></i>
+                Número de Cuenta
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                id="accountNumber"
+                class="form-control form-control-lg"
+                [class.is-invalid]="isFieldInvalid('accountNumber')"
+                formControlName="accountNumber"
+                list="accountOptions"
+                placeholder="Escriba para buscar una cuenta..."
+                autocomplete="off"
+              />
+              <datalist id="accountOptions">
+                <option 
+                  *ngFor="let account of activeAccounts" 
+                  [value]="account.accountNumber">
+                  {{ account.accountNumber }} - {{ account.type }} ({{ account.currency }}) - Balance: {{ account.balance }}
+                </option>
+              </datalist>
+              <div *ngIf="isFieldInvalid('accountNumber')" class="invalid-feedback">
+                {{ getFieldError("Número de Cuenta") }}
+              </div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Seleccione el número de cuenta del beneficiario de la lista
+              </div>
+              
+              <!-- Información de la cuenta seleccionada -->
+              <div *ngIf="getSelectedAccountInfo()" class="mt-2 p-3 bg-light rounded border">
+                <h6 class="mb-2 text-primary">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Información de la Cuenta Seleccionada
+                </h6>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <small class="text-muted">Tipo:</small>
+                    <div class="fw-semibold">{{ getSelectedAccountInfo().type }}</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <small class="text-muted">Moneda:</small>
+                    <div class="fw-semibold">{{ getSelectedAccountInfo().currency }}</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <small class="text-muted">Balance:</small>
+                    <div class="fw-semibold">{{ getSelectedAccountInfo().balance | currency:getSelectedAccountInfo().currency:'symbol':'1.2-2' }}</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <small class="text-muted">Estado:</small>
+                    <span class="badge bg-success">{{ getSelectedAccountInfo().status }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Campo Alias -->
+            <div class="mb-4">
+              <label for="alias" class="form-label fw-semibold">
+                <i class="fas fa-tag me-1 text-primary"></i>
+                Alias
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                id="alias"
+                class="form-control form-control-lg"
+                [class.is-invalid]="isFieldInvalid('alias')"
+                formControlName="alias"
+                placeholder="Ej: Cuenta Principal, Ahorros Emergencia"
+                maxlength="50"
+              />
+              <div *ngIf="isFieldInvalid('alias')" class="invalid-feedback">
+                {{ getFieldError("Alias") }}
+              </div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Nombre corto y fácil de recordar para la cuenta (3-50
+                caracteres)
+              </div>
+            </div>
+
+            <!-- Campo Description -->
+            <div class="mb-4">
+              <label for="description" class="form-label fw-semibold">
+                <i class="fas fa-file-alt me-1 text-primary"></i>
+                Descripción
+                <span class="text-danger">*</span>
+              </label>
+              <textarea
+                id="description"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('description')"
+                formControlName="description"
+                rows="4"
+                placeholder="Ej: Mi cuenta de ahorros principal para gastos personales y emergencias"
+                maxlength="200"
+              ></textarea>
+              <div
+                *ngIf="isFieldInvalid('description')"
+                class="invalid-feedback"
+              >
+                {{ getFieldError("Descripción") }}
+              </div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Descripción detallada del propósito de esta cuenta (5-200
+                caracteres)
+              </div>
+            </div>
+
+            <!-- Información del usuario -->
+            <div class="alert alert-info d-flex align-items-center mb-4">
+              <i class="fas fa-user me-2"></i>
+              <div><strong>Usuario ID:</strong> {{ id() }}</div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="d-flex gap-3 justify-content-end">
+              <button
+                type="button"
+                class="btn btn-outline-secondary btn-lg px-4"
+                (click)="onCancel()"
+                [disabled]="isLoading()"
+              >
+                <i class="fas fa-times me-2"></i>
+                Cancelar
+              </button>
+
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg px-4"
+                [disabled]="isLoading() || beneficiaryForm.invalid"
+              >
+                <span
+                  *ngIf="isLoading()"
+                  class="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <i *ngIf="!isLoading()" class="fas fa-save me-2"></i>
+                {{ isLoading() ? "Guardando..." : "Guardar Beneficiario" }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { UserService } from '../../../service/user.service';
 import { BeneficiaryService } from '../../../service/beneficiary.service';
 import { BeneficiaryTableResponse } from '../../../models';
@@ -8,7 +10,7 @@ import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-beneficiary-list',
-  imports: [BeneficiaryTableListComponent],
+  imports: [BeneficiaryTableListComponent, FormsModule, CommonModule],
   templateUrl: './beneficiary-list.component.html',
 })
 export default class BeneficiaryListComponent implements OnInit {
@@ -19,6 +21,9 @@ export default class BeneficiaryListComponent implements OnInit {
   beneficiaries = signal<BeneficiaryTableResponse[]>([]);
   isLoading = signal(true);
   error = signal<string | null>(null);
+  isSaving = signal(false);
+
+  private currentUserId = signal<number>(0);
 
   ngOnInit(): void {
     const email = localStorage.getItem('email') ?? '';
@@ -42,13 +47,13 @@ export default class BeneficiaryListComponent implements OnInit {
             this.router.navigate(['/auth/login']);
             return [];
           }
+          this.currentUserId.set(user.id);
           return this.beneficiaryService.getBeneficiariesByUser(user.id);
         })
       )
       .subscribe({
         next: (beneficiaries) => {
           console.log('Beneficiaries:', beneficiaries);
-          // Cast the response to our DTO type since the API returns the extended data
           this.beneficiaries.set(beneficiaries as BeneficiaryTableResponse[]);
           this.isLoading.set(false);
         },
@@ -58,5 +63,9 @@ export default class BeneficiaryListComponent implements OnInit {
           this.isLoading.set(false);
         },
       });
+  }
+
+  createBeneficiary() {
+    this.router.navigate(['/beneficiaries/edit', this.currentUserId()]);
   }
 }
