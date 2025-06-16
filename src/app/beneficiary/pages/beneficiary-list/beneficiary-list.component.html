@@ -11,9 +11,7 @@
             Administra y visualiza todos los beneficiarios registrados
           </p>
         </div>
-        <button class="btn btn-success"
-          (click)="createBeneficiary()"
-        >
+        <button class="btn btn-success" (click)="createBeneficiary()">
           <i class="bi bi-person-plus-fill me-2"></i>
           Nuevo Beneficiario
         </button>
@@ -32,7 +30,10 @@
         {{ error() }}
       </div>
       } @else {
-      <app-beneficiary-table-list [beneficiaryList]="beneficiaries()" />
+      <app-beneficiary-table-list
+        [beneficiaryList]="beneficiaries()"
+        (beneficiaryId)="deleteBeneficiary($event)"
+      />
       }
     </div>
   </div>

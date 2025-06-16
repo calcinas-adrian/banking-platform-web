@@ -6,7 +6,7 @@ import { UserService } from '../../../service/user.service';
 import { BeneficiaryService } from '../../../service/beneficiary.service';
 import { BeneficiaryTableResponse } from '../../../models';
 import { BeneficiaryTableListComponent } from './beneficiary-table-list/beneficiary-table-list.component';
-import { switchMap } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-beneficiary-list',
@@ -49,7 +49,10 @@ export default class BeneficiaryListComponent implements OnInit {
           }
           this.currentUserId.set(user.id);
           return this.beneficiaryService.getBeneficiariesByUser(user.id);
-        })
+        }),
+        map((beneficiaries) =>
+          beneficiaries.filter((beneficiary) => !beneficiary.deleted)
+        )
       )
       .subscribe({
         next: (beneficiaries) => {
@@ -67,5 +70,22 @@ export default class BeneficiaryListComponent implements OnInit {
 
   createBeneficiary() {
     this.router.navigate(['/beneficiaries/edit', this.currentUserId()]);
+  }
+
+  deleteBeneficiary(beneficiaryId: number) {
+    this.isSaving.set(true);
+    this.error.set(null);
+
+    this.beneficiaryService.delete(beneficiaryId).subscribe({
+      next: () => {
+        this.getBeneficiaryList(localStorage.getItem('email') ?? '');
+        this.isSaving.set(false);
+      },
+      error: (error) => {
+        console.error('Error deleting beneficiary:', error);
+        this.error.set('Error al eliminar el beneficiario');
+        this.isSaving.set(false);
+      },
+    });
   }
 }

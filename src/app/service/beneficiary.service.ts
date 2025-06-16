@@ -15,6 +15,12 @@ export class BeneficiaryService {
     );
   }
 
+  delete(beneficiaryId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${this.ApiUrl}/beneficiary/${beneficiaryId}`
+    );
+  }
+
   getAll(): Observable<Beneficiary[]> {
     return this.http.get<Beneficiary[]>(`${this.ApiUrl}/beneficiary`);
   }

@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { KeyValuePipe } from '@angular/common';
 import { BeneficiaryTableResponse } from '../../../../models';
 
@@ -6,10 +6,11 @@ import { BeneficiaryTableResponse } from '../../../../models';
   selector: 'app-beneficiary-table-list',
   imports: [KeyValuePipe],
   templateUrl: './beneficiary-table-list.component.html',
-  styleUrl: './beneficiary-table-list.component.css'
+  styleUrl: './beneficiary-table-list.component.css',
 })
 export class BeneficiaryTableListComponent {
   beneficiaryList = input.required<BeneficiaryTableResponse[]>();
+  beneficiaryId = output<number>();
 
   /**
    * Obtiene las iniciales del alias o genera por defecto
@@ -24,15 +25,16 @@ export class BeneficiaryTableListComponent {
    */
   formatDate(dateInput?: string | Date): string {
     if (!dateInput) return '';
-    
+
     try {
-      const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+      const date =
+        typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
       return new Intl.DateTimeFormat('es-BO', {
         year: 'numeric',
         month: 'short',
         day: '2-digit',
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
       }).format(date);
     } catch (error) {
       return dateInput.toString();
@@ -44,9 +46,9 @@ export class BeneficiaryTableListComponent {
    */
   getAccountTypeLabel(type: string): string {
     const types: { [key: string]: string } = {
-      'SAVINGS': 'Ahorros',
-      'CHECKING': 'Corriente',
-      'INVESTMENT': 'Inversión'
+      SAVINGS: 'Ahorros',
+      CHECKING: 'Corriente',
+      INVESTMENT: 'Inversión',
     };
     return types[type] || type;
   }
@@ -56,10 +58,10 @@ export class BeneficiaryTableListComponent {
    */
   getAccountStatusLabel(status: string): string {
     const statuses: { [key: string]: string } = {
-      'ACTIVE': 'Activa',
-      'CLOSED': 'Cerrada',
-      'SUSPENDED': 'Suspendida',
-      'PENDING': 'Pendiente'
+      ACTIVE: 'Activa',
+      CLOSED: 'Cerrada',
+      SUSPENDED: 'Suspendida',
+      PENDING: 'Pendiente',
     };
     return statuses[status] || status;
   }
@@ -69,16 +71,18 @@ export class BeneficiaryTableListComponent {
    */
   getBeneficiaryStats() {
     const beneficiaries = this.beneficiaryList();
-    const currencies = new Set(beneficiaries.map(b => b.accountCurrency));
-    const accountTypes = new Set(beneficiaries.map(b => b.accountType));
-    
+    const currencies = new Set(beneficiaries.map((b) => b.accountCurrency));
+    const accountTypes = new Set(beneficiaries.map((b) => b.accountType));
+
     return {
       total: beneficiaries.length,
-      active: beneficiaries.filter(b => b.accountStatus === 'ACTIVE').length,
+      active: beneficiaries.filter((b) => b.accountStatus === 'ACTIVE').length,
       currencies: Array.from(currencies),
       accountTypes: Array.from(accountTypes),
-      withAlias: beneficiaries.filter(b => b.alias && b.alias.trim()).length,
-      withDescription: beneficiaries.filter(b => b.description && b.description.trim()).length
+      withAlias: beneficiaries.filter((b) => b.alias && b.alias.trim()).length,
+      withDescription: beneficiaries.filter(
+        (b) => b.description && b.description.trim()
+      ).length,
     };
   }
 
@@ -87,14 +91,14 @@ export class BeneficiaryTableListComponent {
    */
   getBeneficiariesByCurrency(): { [currency: string]: number } {
     const totals: { [currency: string]: number } = {};
-    
-    this.beneficiaryList().forEach(beneficiary => {
+
+    this.beneficiaryList().forEach((beneficiary) => {
       if (!totals[beneficiary.accountCurrency]) {
         totals[beneficiary.accountCurrency] = 0;
       }
       totals[beneficiary.accountCurrency]++;
     });
-    
+
     return totals;
   }
 
@@ -102,6 +106,12 @@ export class BeneficiaryTableListComponent {
    * Obtiene el número de beneficiarios con cuentas activas
    */
   getActiveBeneficiariesCount(): number {
-    return this.beneficiaryList().filter(b => b.accountStatus === 'ACTIVE').length;
+    return this.beneficiaryList().filter((b) => b.accountStatus === 'ACTIVE')
+      .length;
+  }
+
+  deleteBeneficiary(beneficiaryId: number | undefined): void {
+    if (!beneficiaryId) return;
+    this.beneficiaryId.emit(beneficiaryId);
   }
 }
