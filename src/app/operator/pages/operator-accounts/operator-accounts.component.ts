@@ -1,9 +1,19 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
+import { TopBarComponent } from '../../../shared/components/top-bar/top-bar.component';
+import { ViewAccountsAndBalancesComponent } from '../../components/view-accounts-and-balances/view-accounts-and-balances.component';
 
 @Component({
   selector: 'app-operator-accounts',
-  imports: [],
+  imports: [TopBarComponent, ViewAccountsAndBalancesComponent],
   templateUrl: './operator-accounts.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class OperatorAccountsComponent { }
+export default class OperatorAccountsComponent {
+  mainLinks = [
+    { name: 'Cuentas', url: '/operator/accounts', icon: 'account_circle' },
+    {
+      name: 'Transacciones',
+      url: '/operator/transactions',
+      icon: 'monetization_on',
+    },
+  ];
+}

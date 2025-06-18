@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Account, AccountTableResponse } from '../models';
+import { AccountsAndBalancesResponse } from '../models/dto.response/accounts-and-balances.response';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class AccountService {
   private http = inject(HttpClient);
 
   getAll() {
-    return this.http.get<Account[]>(`${this.ApiUrl}/account`);
+    return this.http.get<AccountsAndBalancesResponse[]>(`${this.ApiUrl}/account`);
   }
 
   getById(id: number) {

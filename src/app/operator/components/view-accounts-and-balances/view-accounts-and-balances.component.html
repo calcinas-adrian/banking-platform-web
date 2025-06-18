@@ -1,0 +1,229 @@
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2 class="mb-0">
+            <i class="bi bi-bank me-2"></i>
+            Cuentas y Balances
+          </h2>
+          <p class="text-muted mb-0">Panel de administración de cuentas</p>
+        </div>
+        <div class="text-end">
+          <button
+            class="btn btn-outline-primary btn-sm me-2"
+            (click)="reloadAccounts()"
+            [disabled]="loading()"
+          >
+            <i class="bi bi-arrow-clockwise me-1"></i>
+            Recargar
+          </button>
+          <small class="text-muted d-block"
+            >Última actualización:
+            {{ currentDate.toLocaleString("es-ES") }}</small
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  @if (loading()) {
+  <div class="d-flex justify-content-center py-5">
+    <div class="text-center">
+      <div class="spinner-border text-primary mb-3" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="text-muted">Cargando cuentas...</p>
+      <small class="text-muted"
+        >Si esto tarda mucho, verifique la consola del navegador</small
+      >
+    </div>
+  </div>
+  }
+
+  <!-- Error Alert -->
+  @if (error() && !loading()) {
+  <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <div class="flex-grow-1">
+      <strong>Error al cargar las cuentas:</strong><br />
+      {{ error() }}
+    </div>
+    <button
+      type="button"
+      class="btn btn-outline-danger btn-sm"
+      (click)="reloadAccounts()"
+    >
+      <i class="bi bi-arrow-clockwise me-1"></i>
+      Reintentar
+    </button>
+  </div>
+  }
+
+  <!-- Content -->
+  @if (!loading() && !error()) {
+  <!-- Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                <i class="bi bi-collection text-primary fs-4"></i>
+              </div>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="text-muted mb-1">Total Cuentas</h6>
+              <h3 class="mb-0">{{ totalAccounts }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+                <i class="bi bi-check-circle text-success fs-4"></i>
+              </div>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="text-muted mb-1">Cuentas Activas</h6>
+              <h3 class="mb-0">{{ activeAccounts }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <div class="bg-info bg-opacity-10 p-3 rounded-circle">
+                <i class="bi bi-currency-dollar text-info fs-4"></i>
+              </div>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="text-muted mb-1">Balance Total</h6>
+              <h3 class="mb-0">
+                {{ totalBalance | currency : "BOB" : "symbol" : "1.2-2" }}
+              </h3>
+              <small class="text-muted">Equivalente aproximado</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accounts Table -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="bi bi-table me-2"></i>
+          Lista de Cuentas
+        </h5>
+        <span class="badge bg-primary">{{ accounts.length }} registros</span>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col" class="px-4 py-3">ID</th>
+              <th scope="col" class="px-4 py-3">Número de Cuenta</th>
+              <th scope="col" class="px-4 py-3">Tipo</th>
+              <th scope="col" class="px-4 py-3">Moneda</th>
+              <th scope="col" class="px-4 py-3">Balance</th>
+              <th scope="col" class="px-4 py-3">Estado</th>
+              <th scope="col" class="px-4 py-3">Fecha Creación</th>
+              <th scope="col" class="px-4 py-3">Última Modificación</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (account of accounts; track $index) {
+            <tr [class.table-active]="account.status === 'ACTIVE'">
+              <td class="px-4 py-3">
+                <span class="fw-medium">{{ account.id }}</span>
+              </td>
+              <td class="px-4 py-3">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-credit-card-2-front me-2 text-muted"></i>
+                  <code class="bg-light px-2 py-1 rounded">{{
+                    account.accountNumber
+                  }}</code>
+                </div>
+              </td>
+              <td class="px-4 py-3">
+                <span [class]="getTypeClass(account.type)" class="fw-medium">
+                  <i class="bi bi-tag me-1"></i>
+                  {{ account.type }}
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                <span class="badge bg-secondary">{{ account.currency }}</span>
+              </td>
+              <td class="px-4 py-3">
+                <div
+                  class="fw-bold"
+                  [class.text-success]="account.balance > 0"
+                  [class.text-danger]="account.balance <= 0"
+                >
+                  {{ account.balance | currency }}
+                </div>
+              </td>
+              <td class="px-4 py-3">
+                <span [class]="getStatusClass(account.status)">
+                  {{ account.status }}
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                <div class="text-muted">
+                  <i class="bi bi-calendar-plus me-1"></i>
+                  <small>{{ formatDate(account.addDate) }}</small>
+                </div>
+              </td>
+              <td class="px-4 py-3">
+                @if (account.changeDate) {
+                <div class="text-muted">
+                  <i class="bi bi-calendar-check me-1"></i>
+                  <small>{{ formatDate(account.changeDate) }}</small>
+                </div>
+                } @else {
+                <span class="text-muted">
+                  <small>Sin modificaciones</small>
+                </span>
+                }
+              </td>
+            </tr>
+            } @empty {
+            <!-- Empty State Row -->
+            <tr>
+              <td colspan="8" class="text-center py-5">
+                <div class="mb-4">
+                  <i class="bi bi-inbox display-1 text-muted"></i>
+                </div>
+                <h4>No hay cuentas disponibles</h4>
+                <p class="text-muted">
+                  No se encontraron cuentas en el sistema.
+                </p>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  }
+</div>

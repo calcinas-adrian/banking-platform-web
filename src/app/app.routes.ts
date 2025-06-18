@@ -32,8 +32,17 @@ export const routes: Routes = [
       {
         path: 'accounts',
         loadComponent: () =>
-          import('./operator/pages/operator-accounts/operator-accounts.component'),
-      }
+          import(
+            './operator/pages/operator-accounts/operator-accounts.component'
+          ),
+      },
+      {
+        path: 'transactions',
+        loadComponent: () =>
+          import(
+            './operator/pages/operator-transactions/operator-transactions.component'
+          ),
+      },
     ],
   },
   {

@@ -1,0 +1,71 @@
+/* Estilos personalizados para el componente de cuentas y balances */
+
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.table-active {
+  background-color: rgba(40, 167, 69, 0.05) !important;
+}
+
+code {
+  font-size: 0.875em;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .px-4 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}
+
+/* Status badges styling */
+.badge {
+  font-size: 0.75em;
+  font-weight: 500;
+}
+
+/* Balance amount styling */
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+/* Icon styling */
+.bi {
+  line-height: 1;
+}
+
+/* Empty state styling */
+.display-1 {
+  font-size: 6rem;
+  opacity: 0.3;
+}
+
+/* Custom animation for loading */
+.spinner-border {
+  animation: spinner-border 0.75s linear infinite;
+}
