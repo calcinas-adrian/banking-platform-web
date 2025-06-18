@@ -1,14 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import {
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+import { TopBarComponent } from '../../../shared/components/top-bar/top-bar.component';
 
 @Component({
   selector: 'app-account-page',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, TopBarComponent],
   templateUrl: './account-page.component.html',
 })
 export default class AccountPageComponent implements OnInit {
@@ -20,14 +16,17 @@ export default class AccountPageComponent implements OnInit {
     {
       name: 'Home',
       url: '/',
+      icon: 'fas fa-envelope',
     },
     {
       name: 'Lista de Cuentas',
       url: '/account/list',
+      icon: 'fas fa-envelope',
     },
     {
       name: 'Ver todos los usuarios',
       url: '/user',
+      icon: 'fas fa-envelope',
     },
   ];
 
