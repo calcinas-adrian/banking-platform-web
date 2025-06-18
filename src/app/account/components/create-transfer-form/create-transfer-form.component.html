@@ -1,0 +1,275 @@
+<!-- Formulario de transferencia -->
+<form (ngSubmit)="makeTransfer()" #transferForm="ngForm">
+  <div class="row g-3">
+    <!-- Cuenta origen -->
+    <div class="col-12">
+      <label for="sourceAccount" class="form-label fw-semibold">
+        <i class="bi bi-credit-card me-2"></i>
+        Cuenta Origen <span class="text-danger">*</span>
+      </label>
+      <select 
+        class="form-select form-select-lg" 
+        id="sourceAccount"
+        [ngModel]="sourceAccountId()"
+        (ngModelChange)="sourceAccountId.set($event)"
+        name="sourceAccount"
+        required
+      >
+        <option value="">Selecciona una cuenta origen</option>
+        @for (account of accountList(); track account.id) {
+          <option [value]="account.id">
+            {{ account.accountNumber }} - {{ account.type }} ({{ account.currency }})
+          </option>
+        }
+      </select>
+    </div>
+    
+    <!-- Tipo de transacción -->
+    <div class="col-md-6">
+      <label for="transactionType" class="form-label fw-semibold">
+        <i class="bi bi-arrow-left-right me-2"></i>
+        Tipo de Transacción
+      </label>
+      <select 
+        class="form-select" 
+        id="transactionType"
+        [ngModel]="transactionType()"
+        (ngModelChange)="transactionType.set($event)"
+        name="transactionType"
+        required
+      >
+        @for (type of transactionTypes; track type.value) {
+          <option [value]="type.value">{{ type.label }}</option>
+        }
+      </select>
+    </div>
+    
+    <!-- Monto -->
+    <div class="col-md-6">
+      <label for="amount" class="form-label fw-semibold">
+        <i class="bi bi-cash me-2"></i>
+        Monto <span class="text-danger">*</span>
+      </label>
+      <div class="input-group">
+        <span class="input-group-text">$</span>
+        <input 
+          type="number" 
+          class="form-control" 
+          id="amount"
+          [ngModel]="amount()"
+          (ngModelChange)="amount.set($event)"
+          name="amount"
+          min="0.01"
+          step="0.01"
+          placeholder="0.00"
+          required
+        >
+      </div>
+    </div>
+    
+    <!-- Descripción -->
+    <div class="col-12">
+      <label for="description" class="form-label fw-semibold">
+        <i class="bi bi-chat-text me-2"></i>
+        Descripción
+      </label>
+      <textarea 
+        class="form-control" 
+        id="description"
+        [ngModel]="description()"
+        (ngModelChange)="description.set($event)"
+        name="description"
+        rows="2"
+        placeholder="Descripción opcional de la transferencia"
+      ></textarea>
+    </div>
+    
+    <!-- Referencia -->
+    <div class="col-12">
+      <label for="reference" class="form-label fw-semibold">
+        <i class="bi bi-hash me-2"></i>
+        Referencia
+      </label>
+      <div class="input-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          id="reference"
+          [ngModel]="reference()"
+          (ngModelChange)="reference.set($event)"
+          name="reference"
+          placeholder="Referencia opcional"
+        >
+        <button 
+          type="button" 
+          class="btn btn-outline-secondary"
+          (click)="reference.set(generateReference())"
+          title="Generar referencia automática"
+        >
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+      </div>
+      <div class="form-text">
+        <i class="bi bi-info-circle me-1"></i>
+        Se generará automáticamente si no se proporciona
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mensaje de error -->
+  @if (transferError()) {
+    <div class="alert alert-danger mt-3" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      {{ transferError() }}
+    </div>
+  }
+  
+  <!-- Botón de realizar transferencia -->
+  <div class="d-grid gap-2 mt-4">
+    <button 
+      type="submit" 
+      class="btn btn-primary btn-lg"
+      [disabled]="isTransferring() || !sourceAccountId() || amount() <= 0"
+    >
+      @if (isTransferring()) {
+        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+        Procesando transferencia...
+      } @else {
+        <i class="bi bi-arrow-right-circle me-2"></i>
+        Realizar Transferencia
+      }
+    </button>
+  </div>
+</form>
+
+<hr class="my-4">
+
+<!-- Sección de selección de beneficiario como destino -->
+<div class="mb-3">
+  <label for="beneficiarySearch" class="form-label fw-semibold">
+    <i class="bi bi-person-check me-2"></i>
+    Seleccionar Beneficiario como Destino
+  </label>
+  <div class="input-group">
+    <input
+      class="form-control"
+      list="beneficiaryOptions"
+      id="beneficiarySearch"
+      placeholder="Buscar beneficiario para transferir..."
+      [ngModel]="selectedBeneficiary()"
+      (ngModelChange)="onSearchBeneficiary($event)"
+    />
+    @if (selectedBeneficiary()) {
+      <button 
+        class="btn btn-outline-secondary" 
+        type="button"
+        (click)="clearSearch()"
+        title="Limpiar selección"
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
+    }
+  </div>
+  <datalist id="beneficiaryOptions">
+    @for (beneficiary of filteredBeneficiaries(); track beneficiary.id) {
+      <option [value]="getBeneficiaryDisplayText(beneficiary)"></option>
+    }
+  </datalist>
+  <div class="form-text">
+    <i class="bi bi-info-circle me-1"></i>
+    Opcional: Selecciona un beneficiario como cuenta destino para transferencias
+  </div>
+  
+  <!-- Mostrar cuenta destino seleccionada -->
+  @if (targetAccountId()) {
+    <div class="alert alert-info mt-2" role="alert">
+      <i class="bi bi-check-circle me-2"></i>
+      <strong>Cuenta destino seleccionada:</strong> {{ selectedBeneficiary() }}
+    </div>
+  }
+</div>
+
+@if (selectedBeneficiary() && filteredBeneficiaries().length === 0) {
+<div class="alert alert-warning d-flex align-items-center" role="alert">
+  <i class="bi bi-exclamation-triangle-fill me-2"></i>
+  <div>No se encontraron beneficiarios que coincidan con tu búsqueda.</div>
+</div>
+} @if (filteredBeneficiaries().length > 0 && selectedBeneficiary()) {
+<div class="mt-3">
+  <h6 class="text-muted mb-2">
+    <i class="bi bi-person-check me-2"></i>
+    Beneficiarios encontrados ({{ filteredBeneficiaries().length }})
+  </h6>
+  <div class="row g-2">
+    @for (beneficiary of filteredBeneficiaries(); track beneficiary.id) {
+    <div class="col-12">
+      <div class="card border-start border-success border-3 shadow-sm hover-card" 
+           style="cursor: pointer;" 
+           (click)="selectBeneficiary(beneficiary)">
+        <div class="card-body py-2 px-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="flex-grow-1">
+              <h6 class="mb-1 text-primary">
+                <i class="bi bi-person-fill me-2"></i>
+                {{ beneficiary.alias || "Sin alias" }}
+              </h6>
+              <p class="mb-1 small text-muted">
+                <i class="bi bi-credit-card me-1"></i>
+                {{ beneficiary.accountNumber }} - {{ beneficiary.accountType }}
+              </p>
+              <p class="mb-1 small text-muted">
+                <i class="bi bi-envelope me-1"></i>
+                {{ beneficiary.userEmail }}
+              </p>
+              @if (beneficiary.description) {
+              <p class="mb-0 small text-secondary">
+                <i class="bi bi-chat-text me-1"></i>
+                {{ beneficiary.description }}
+              </p>
+              }
+            </div>
+            <div class="text-end d-flex flex-column align-items-end gap-1">
+              <span
+                class="badge bg-success-subtle text-success border border-success"
+              >
+                <i class="bi bi-currency-dollar me-1"></i>
+                {{ beneficiary.accountCurrency }}
+              </span>
+              <small class="text-muted">
+                {{ beneficiary.accountStatus }}
+              </small>
+              <button 
+                class="btn btn-sm btn-primary"
+                (click)="selectBeneficiaryForTransfer(beneficiary); $event.stopPropagation()"
+                title="Seleccionar como cuenta destino"
+              >
+                <i class="bi bi-check-lg me-1"></i>
+                Seleccionar Destino
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+} @if (!selectedBeneficiary() && beneficiaries().length > 0) {
+<div class="text-center text-muted">
+  <i class="bi bi-info-circle me-2"></i>
+  Tienes {{ beneficiaries().length }} beneficiario(s) disponible(s). Empieza a
+  escribir para buscar.
+</div>
+} @if (beneficiaries().length === 0 && !isLoading()) {
+<div class="text-center text-muted">
+  <i class="bi bi-person-x me-2"></i>
+  No tienes beneficiarios registrados aún.
+</div>
+} @if (isLoading()) {
+<div class="text-center">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Cargando beneficiarios...</span>
+  </div>
+  <p class="mt-2 text-muted">Cargando beneficiarios...</p>
+</div>
+}
