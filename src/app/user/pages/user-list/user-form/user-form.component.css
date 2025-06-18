@@ -1,0 +1,21 @@
+/* Estilos para indicar modo edición */
+.edit-mode {
+  border: 2px solid #28a745;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+}
+
+.edit-mode .card-header {
+  background-color: #28a745 !important;
+}
+
+/* Estilo para campo deshabilitado */
+.form-control:disabled {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #6c757d;
+}
+
+/* Animación suave al cambiar modos */
+.card {
+  transition: all 0.3s ease;
+}

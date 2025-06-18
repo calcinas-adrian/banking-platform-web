@@ -10,9 +10,12 @@
       <strong>Cargando usuarios...</strong>
     </div>
     }
-
     <section class="mb-5">
-      <app-user-form (userCreated)="onUserCreated($event)"></app-user-form>
+      <app-user-form
+        [userIdToEdit]="editingUserId()"
+        (userCreated)="onUserCreated($event)"
+        (userUpdated)="onUserUpdated($event)"
+      ></app-user-form>
     </section>
   </div>
 
@@ -22,6 +25,7 @@
       (isLoading)="loading.set($event)"
       (error)="error.set($event)"
       (newUserList)="userList.set($event)"
+      (editUser)="onEditUser($event)"
     ></app-user-table>
   </div>
 </div>

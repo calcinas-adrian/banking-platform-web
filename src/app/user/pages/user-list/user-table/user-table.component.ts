@@ -16,12 +16,14 @@ export class UserTableComponent {
   isLoading = output<boolean>();
   error = output<string | null>();
   newUserList = output<UserListResponse[]>();
+  editUser = output<number>();
 
   private router = inject(Router);
   private userService = inject(UserService);
 
   sendToEdit(userId: number) {
-    this.router.navigate(['/user/details', userId]);
+    // En lugar de navegar, emitir el evento para editar en el mismo formulario
+    this.editUser.emit(userId);
   }
 
   deleteUser(userId: number): void {
@@ -37,7 +39,7 @@ export class UserTableComponent {
           this.isLoading.emit(false);
         }),
         catchError((error) => {
-          this.error.emit(`Error deleting user: ${error.message}`);
+          this.error.emit(`${error.error.message}`);
           this.isLoading.emit(false);
           return of([]);
         })

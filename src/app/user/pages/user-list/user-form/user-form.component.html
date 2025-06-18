@@ -1,6 +1,18 @@
-<div class="card shadow-lg w-100" style="max-width: 800px">
-  <div class="card-header bg-primary text-white text-center">
-    <h4 class="mb-0">Formulario de Registro</h4>
+<div
+  class="card shadow-lg w-100"
+  style="max-width: 800px"
+  [ngClass]="{ 'edit-mode': isEditMode() }"
+>
+  <div
+    class="card-header text-white text-center"
+    [ngClass]="isEditMode() ? 'bg-success' : 'bg-primary'"
+  >
+    <h4 class="mb-0">
+      {{ isEditMode() ? "Editar Usuario" : "Formulario de Registro" }}
+    </h4>
+    @if (isEditMode() && editingUser()) {
+    <small class="d-block mt-1"> Editando: {{ editingUser().email }} </small>
+    }
   </div>
   <div class="card-body p-4">
     <form id="registroForm" class="needs-validation" novalidate>
@@ -18,17 +30,22 @@
             (ngModelChange)="newUser().email = $event"
           />
         </div>
-
         <div class="col-md-6">
-          <label for="password" class="form-label">Contraseña *</label>
+          <label for="password" class="form-label">
+            Contraseña {{ !isEditMode() ? "*" : "" }}
+          </label>
           <input
             type="password"
             id="password"
             class="form-control"
             name="password"
-            required
+            [required]="!isEditMode()"
+            [disabled]="isEditMode()"
             [ngModel]="newUser().password"
             (ngModelChange)="newUser().password = $event"
+            [placeholder]="
+              isEditMode() ? 'La contraseña no se puede editar' : ''
+            "
           />
         </div>
       </div>
@@ -107,8 +124,8 @@
           />
         </div>
       </div>
-
-      <!-- Checkbox para cuenta bancaria -->
+      <!-- Checkbox para cuenta bancaria (solo en modo creación) -->
+      @if (!isEditMode()) {
       <div class="form-check mb-3">
         <input
           class="form-check-input"
@@ -121,9 +138,9 @@
           Crear cuenta bancaria
         </label>
       </div>
-
-      <!-- Datos de cuenta bancaria -->
-      @if (hasCreateAccount()) {
+      }
+      <!-- Datos de cuenta bancaria (solo en modo creación) -->
+      @if (hasCreateAccount() && !isEditMode()) {
       <div class="row mb-3">
         <div class="col-md-4">
           <label for="saldoInicial" class="form-label">Saldo inicial</label>
@@ -169,9 +186,26 @@
         </div>
       </div>
       }
-
-      <!-- Botón -->
+      <!-- Botones -->
       <div class="d-grid mt-4">
+        @if (isEditMode()) {
+        <div class="d-flex gap-2">
+          <button
+            type="button"
+            class="btn btn-success btn-lg flex-fill"
+            (click)="handleSubmit()"
+          >
+            Actualizar Usuario
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary btn-lg"
+            (click)="cancelEdit()"
+          >
+            Cancelar
+          </button>
+        </div>
+        } @else {
         <button
           type="button"
           class="btn btn-primary btn-lg"
@@ -179,6 +213,7 @@
         >
           Registrar Usuario
         </button>
+        }
       </div>
     </form>
   </div>

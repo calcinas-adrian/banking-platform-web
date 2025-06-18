@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CreateUserRequest, User } from '../models';
+import { UpdateUserRequest } from '../models/dto/update-user-request.dto';
 import { map, Observable } from 'rxjs';
 import { LoginSuccesfullyResponse } from '../models/dto.response/login.response';
 import { GetUserByEmailResponse } from '../models/dto.response/get-user-by-email.response';
@@ -20,9 +21,12 @@ export class UserService {
   getById(id: number) {
     return this.http.get<User>(`${this.ApiUrl}/users/${id}`);
   }
-
   save(user: CreateUserRequest) {
     return this.http.post<User>(`${this.ApiUrl}/users`, user);
+  }
+
+  update(user: UpdateUserRequest) {
+    return this.http.put<User>(`${this.ApiUrl}/users/${user.id}`, user);
   }
 
   deleteById(id: number) {

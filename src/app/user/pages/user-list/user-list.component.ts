@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { UserTableComponent } from './user-table/user-table.component';
 import { UserService } from '../../../service/user.service';
 import { CreateUserRequest, User } from '../../../models';
+import { UpdateUserRequest } from '../../../models/dto/update-user-request.dto';
 import { UserListResponse } from '../../../models/dto.response/user-list.response';
 
 @Component({
@@ -17,6 +18,7 @@ export default class UserListComponent implements OnInit {
   userList = signal<UserListResponse[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
+  editingUserId = signal<number | null>(null);
 
   private userService = inject(UserService);
 
@@ -43,6 +45,32 @@ export default class UserListComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  onUserUpdated(userData: UpdateUserRequest): void {
+    this.loading.set(true);
+    this.error.set(null);
+
+    this.userService
+      .update(userData)
+      .pipe(
+        switchMap(() => this.userService.getAll()),
+        tap((users) => {
+          this.userList.set(users);
+          this.loading.set(false);
+          this.editingUserId.set(null); // Limpiar el modo edición
+        }),
+        catchError((error) => {
+          this.error.set(`Error al actualizar el usuario, revisa los datos`);
+          this.loading.set(false);
+          return of([]);
+        })
+      )
+      .subscribe();
+  }
+
+  onEditUser(userId: number): void {
+    this.editingUserId.set(userId);
   }
 
   private loadUsers(): void {
