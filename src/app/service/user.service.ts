@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models';
+import { CreateUserRequest, User } from '../models';
 import { map, Observable } from 'rxjs';
 import { LoginSuccesfullyResponse } from '../models/dto.response/login.response';
 import { GetUserByEmailResponse } from '../models/dto.response/get-user-by-email.response';
@@ -21,7 +21,7 @@ export class UserService {
     return this.http.get<User>(`${this.ApiUrl}/users/${id}`);
   }
 
-  save(user: User) {
+  save(user: CreateUserRequest) {
     return this.http.post<User>(`${this.ApiUrl}/users`, user);
   }
 
@@ -38,12 +38,9 @@ export class UserService {
 
   getUserByEmail(email: string): Observable<User> {
     return this.http
-      .post<GetUserByEmailResponse>(
-        `${this.ApiUrl}/users/search/email`,
-        {
-          email,
-        }
-      )
+      .post<GetUserByEmailResponse>(`${this.ApiUrl}/users/search/email`, {
+        email,
+      })
       .pipe(
         map((response: GetUserByEmailResponse) => {
           return {

@@ -52,7 +52,7 @@ export default class LoginPageComponent {
         }
 
         if (resp.rol.name === 'Operador') {
-          this.router.navigate(['/user/list']);
+          this.router.navigate(['/operator/accounts']);
           return;
         }
 

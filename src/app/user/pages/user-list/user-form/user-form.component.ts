@@ -16,16 +16,53 @@ export class UserFormComponent {
     password: '',
     name: '',
     lastName: '',
-    gender: '',
-    birthDate: '',
-    saldo: 0.0,
-    type: '',
+    ci: '',
+    mobile: '',
+    address: '',
+    saldoInicial: undefined,
+    tipoCuenta: 'SAVINGS',
+    moneda: 'BOB',
   });
   hasCreateAccount = signal(false);
-
   handleSubmit() {
-    // Solo emite los datos del usuario, no maneja la creación
-    this.userCreated.emit(this.newUser());
+    // Crear objeto solo con campos que tienen valor
+    const userToCreate: Partial<CreateUserRequest> = {
+      // Campos obligatorios siempre incluidos
+      email: this.newUser().email,
+      password: this.newUser().password,
+      name: this.newUser().name,
+      lastName: this.newUser().lastName,
+      ci: this.newUser().ci,
+    };
+
+    // Agregar campos opcionales solo si tienen valor
+    const mobile = this.newUser().mobile;
+    if (mobile && mobile.trim() !== '') {
+      userToCreate.mobile = mobile;
+    }
+    
+    const address = this.newUser().address;
+    if (address && address.trim() !== '') {
+      userToCreate.address = address;
+    }
+    
+    const saldoInicial = this.newUser().saldoInicial;
+    if (this.hasCreateAccount() && saldoInicial !== undefined && saldoInicial > 0) {
+      userToCreate.saldoInicial = saldoInicial;
+    }
+    
+    const tipoCuenta = this.newUser().tipoCuenta;
+    if (this.hasCreateAccount() && tipoCuenta && tipoCuenta.trim() !== '') {
+      userToCreate.tipoCuenta = tipoCuenta;
+    }
+    
+    const moneda = this.newUser().moneda;
+    if (this.hasCreateAccount() && moneda && moneda.trim() !== '') {
+      userToCreate.moneda = moneda;
+    }
+
+    // Emite los datos del usuario
+    this.userCreated.emit(userToCreate as CreateUserRequest);
 
     // Limpia el formulario después de emitir
     this.newUser.set({
@@ -33,10 +70,14 @@ export class UserFormComponent {
       password: '',
       name: '',
       lastName: '',
-      gender: '',
-      birthDate: '',
-      saldo: 0.0,
-      type: '',
+      ci: '',
+      mobile: '',
+      address: '',
+      saldoInicial: undefined,
+      tipoCuenta: 'SAVINGS',
+      moneda: 'BOB',
     });
+    
+    this.hasCreateAccount.set(false);
   }
 }

@@ -27,6 +27,16 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'operator',
+    children: [
+      {
+        path: 'accounts',
+        loadComponent: () =>
+          import('./operator/pages/operator-accounts/operator-accounts.component'),
+      }
+    ],
+  },
+  {
     path: 'account',
     loadComponent: () =>
       import('./account/pages/account-page/account-page.component'),

@@ -7,7 +7,7 @@
       <!-- Email & Password -->
       <div class="row mb-3">
         <div class="col-md-6">
-          <label for="email" class="form-label">Correo electrónico</label>
+          <label for="email" class="form-label">Correo electrónico *</label>
           <input
             type="email"
             id="email"
@@ -20,7 +20,7 @@
         </div>
 
         <div class="col-md-6">
-          <label for="password" class="form-label">Contraseña</label>
+          <label for="password" class="form-label">Contraseña *</label>
           <input
             type="password"
             id="password"
@@ -36,7 +36,7 @@
       <!-- Nombre & Apellido -->
       <div class="row mb-3">
         <div class="col-md-6">
-          <label for="name" class="form-label">Nombre</label>
+          <label for="name" class="form-label">Nombre *</label>
           <input
             type="text"
             id="name"
@@ -49,7 +49,7 @@
         </div>
 
         <div class="col-md-6">
-          <label for="lastName" class="form-label">Apellido</label>
+          <label for="lastName" class="form-label">Apellido *</label>
           <input
             type="text"
             id="lastName"
@@ -62,31 +62,48 @@
         </div>
       </div>
 
-      <!-- Género & Fecha de Nacimiento -->
+      <!-- CI & Móvil -->
       <div class="row mb-3">
         <div class="col-md-6">
-          <label for="gender" class="form-label">Género</label>
+          <label for="ci" class="form-label">Cédula de Identidad *</label>
           <input
             type="text"
-            id="gender"
+            id="ci"
             class="form-control"
-            name="gender"
+            name="ci"
             required
-            [ngModel]="newUser().gender"
-            (ngModelChange)="newUser().gender = $event"
+            placeholder="ej: 12345678-9"
+            [ngModel]="newUser().ci"
+            (ngModelChange)="newUser().ci = $event"
           />
         </div>
 
         <div class="col-md-6">
-          <label for="birthDate" class="form-label">Fecha de nacimiento</label>
+          <label for="mobile" class="form-label">Móvil</label>
           <input
-            type="date"
-            id="birthDate"
+            type="text"
+            id="mobile"
             class="form-control"
-            name="birthDate"
-            required
-            [ngModel]="newUser().birthDate"
-            (ngModelChange)="newUser().birthDate = $event"
+            name="mobile"
+            placeholder="ej: +591 78888888"
+            [ngModel]="newUser().mobile"
+            (ngModelChange)="newUser().mobile = $event"
+          />
+        </div>
+      </div>
+
+      <!-- Dirección -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <label for="address" class="form-label">Dirección</label>
+          <input
+            type="text"
+            id="address"
+            class="form-control"
+            name="address"
+            placeholder="ej: Calle Principal 456, Cochabamba"
+            [ngModel]="newUser().address"
+            (ngModelChange)="newUser().address = $event"
           />
         </div>
       </div>
@@ -108,30 +125,47 @@
       <!-- Datos de cuenta bancaria -->
       @if (hasCreateAccount()) {
       <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="saldo" class="form-label">Saldo inicial</label>
+        <div class="col-md-4">
+          <label for="saldoInicial" class="form-label">Saldo inicial</label>
           <input
             type="number"
-            id="saldo"
+            id="saldoInicial"
             class="form-control"
-            name="saldo"
+            name="saldoInicial"
             step="0.01"
-            [ngModel]="newUser().saldo"
-            (ngModelChange)="newUser().saldo = $event"
+            min="0"
+            placeholder="0.00"
+            [ngModel]="newUser().saldoInicial"
+            (ngModelChange)="newUser().saldoInicial = $event"
           />
         </div>
 
-        <div class="col-md-6">
-          <label for="type" class="form-label">Tipo de cuenta</label>
-          <input
-            type="text"
-            id="type"
+        <div class="col-md-4">
+          <label for="tipoCuenta" class="form-label">Tipo de cuenta</label>
+          <select
+            id="tipoCuenta"
             class="form-control"
-            name="type"
-            required
-            [ngModel]="newUser().type"
-            (ngModelChange)="newUser().type = $event"
-          />
+            name="tipoCuenta"
+            [ngModel]="newUser().tipoCuenta"
+            (ngModelChange)="newUser().tipoCuenta = $event"
+          >
+            <option value="SAVINGS">Ahorros</option>
+            <option value="CHECKING">Corriente</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="moneda" class="form-label">Moneda</label>
+          <select
+            id="moneda"
+            class="form-control"
+            name="moneda"
+            [ngModel]="newUser().moneda"
+            (ngModelChange)="newUser().moneda = $event"
+          >
+            <option value="BOB">Bolivianos (BOB)</option>
+            <option value="USD">Dólares (USD)</option>
+          </select>
         </div>
       </div>
       }
@@ -143,7 +177,7 @@
           class="btn btn-primary btn-lg"
           (click)="handleSubmit()"
         >
-          Enviar
+          Registrar Usuario
         </button>
       </div>
     </form>
