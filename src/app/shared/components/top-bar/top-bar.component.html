@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container-fluid px-4">
+    <!-- Brand/Logo -->
+    <a class="navbar-brand" routerLink="/user/details">
+      <i class="fas fa-rocket"></i>
+      <span>$</span>
+    </a>
+
+    <!-- Toggler para móvil -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navegación -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <!-- Enlaces principales usando @for -->
+        @for (link of mainLinks(); track link.name) {
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [routerLink]="link.url"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <i [class]="link.icon + ' me-1'"></i>{{ link.name }}
+          </a>
+        </li>
+        }
+      </ul>
+
+      <!-- Información de usuario -->
+      <div class="user-info d-none d-lg-flex">
+        <!-- Email badge -->
+        <span class="user-badge">
+          <i class="bi bi-person-fill me-1"></i>
+          {{ email() }}
+        </span>
+
+        <!-- Botón cerrar sesión -->
+        <button class="logout-btn" (click)="handleLogout()">
+          <i class="bi bi-door-closed-fill"></i>
+          Cerrar sesión
+        </button>
+      </div>
+
+      <!-- Información de usuario en móvil -->
+      <div class="user-info d-lg-none">
+        <span class="user-badge">
+          <i class="bi bi-person-fill me-1"></i>
+          {{ email() }}
+        </span>
+        <button class="logout-btn" (click)="handleLogout()">
+          <i class="bi bi-door-closed-fill"></i>
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
