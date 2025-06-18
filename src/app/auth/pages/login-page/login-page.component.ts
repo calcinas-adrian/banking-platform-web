@@ -51,7 +51,7 @@ export default class LoginPageComponent {
           return;
         }
 
-        if (resp.rol.name === 'OPERATOR') {
+        if (resp.rol.name === 'OPERATOR' || resp.rol.name === 'MODERATOR') {
           this.router.navigate(['/operator/accounts']);
           return;
         }
