@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { UserTableComponent } from './user-table/user-table.component';
 import { UserService } from '../../../service/user.service';
 import { CreateUserRequest, User } from '../../../models';
+import { UserListResponse } from '../../../models/dto.response/user-list.response';
 
 @Component({
   selector: 'app-user-list',
@@ -13,7 +14,7 @@ import { CreateUserRequest, User } from '../../../models';
   styleUrl: './user-list.component.css',
 })
 export default class UserListComponent implements OnInit {
-  userList = signal<User[]>([]);
+  userList = signal<UserListResponse[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
 
@@ -51,7 +52,7 @@ export default class UserListComponent implements OnInit {
     this.userService
       .getAll()
       .pipe(
-        tap((users: User[]) => {
+        tap((users) => {
           this.userList.set(users);
           this.loading.set(false);
         }),

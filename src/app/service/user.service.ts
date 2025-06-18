@@ -4,16 +4,17 @@ import { User } from '../models';
 import { map, Observable } from 'rxjs';
 import { LoginSuccesfullyResponse } from '../models/dto.response/login.response';
 import { GetUserByEmailResponse } from '../models/dto.response/get-user-by-email.response';
+import { UserListResponse } from '../models/dto.response/user-list.response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private ApiUrl = 'http://localhost:8080';
+  private ApiUrl = 'http://localhost:8080/api/v1';
   private http = inject(HttpClient);
 
   getAll() {
-    return this.http.get<User[]>(`${this.ApiUrl}/users`);
+    return this.http.get<UserListResponse[]>(`${this.ApiUrl}/users`);
   }
 
   getById(id: number) {
@@ -30,7 +31,7 @@ export class UserService {
 
   login(email: string, password: string): Observable<LoginSuccesfullyResponse> {
     return this.http.post<LoginSuccesfullyResponse>(
-      `${this.ApiUrl}/api/v1/users/login`,
+      `${this.ApiUrl}/users/login`,
       { email, password }
     );
   }
@@ -38,7 +39,7 @@ export class UserService {
   getUserByEmail(email: string): Observable<User> {
     return this.http
       .post<GetUserByEmailResponse>(
-        `${this.ApiUrl}/api/v1/users/search/email`,
+        `${this.ApiUrl}/users/search/email`,
         {
           email,
         }

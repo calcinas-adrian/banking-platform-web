@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   Router,
   RouterLink,
@@ -6,7 +6,6 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { UserService } from '../../../service/user.service';
-import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-user-page',
@@ -16,6 +15,10 @@ import { tap } from 'rxjs';
 export default class UserPageComponent implements OnInit {
   private router = inject(Router);
   private userService = inject(UserService);
+
+  email = signal<string>(
+    localStorage.getItem('email') ?? '??'
+  );
 
   listLinks = [
     {

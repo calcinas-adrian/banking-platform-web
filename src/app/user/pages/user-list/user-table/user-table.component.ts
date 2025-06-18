@@ -2,20 +2,20 @@ import { Component, inject, input, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { catchError, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { User } from '../../../../models';
 import { UserService } from '../../../../service/user.service';
+import { UserListResponse } from '../../../../models/dto.response/user-list.response';
 
 @Component({
   selector: 'app-user-table',
-  // imports: [DatePipe],
+  imports: [DatePipe],
   templateUrl: './user-table.component.html',
   styleUrl: './user-table.component.css',
 })
 export class UserTableComponent {
-  userList = input.required<User[]>();
+  userList = input.required<UserListResponse[]>();
   isLoading = output<boolean>();
   error = output<string | null>();
-  newUserList = output<User[]>();
+  newUserList = output<UserListResponse[]>();
 
   private router = inject(Router);
   private userService = inject(UserService);

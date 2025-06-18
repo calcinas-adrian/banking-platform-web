@@ -23,7 +23,13 @@
       </ul>
     </div>
 
-    <!-- Botón cerrar sesión -->
+    <span class="bg-warning">
+      <i class="bi bi-person-fill me-1"></i>
+      {{ email() }}
+    </span>
+
+    &nbsp;&nbsp;
+
     <button
       class="btn btn-outline-light btn-sm d-flex align-items-center gap-2"
       (click)="handleLogout()"
