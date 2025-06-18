@@ -38,7 +38,7 @@ export default class LoginPageComponent {
         })
       )
       .subscribe((resp) => {
-        // console.log('Login successful', resp);
+        console.log('Login successful', resp);
         if (!resp || !resp.id) {
           return;
         }
@@ -46,13 +46,13 @@ export default class LoginPageComponent {
         this.errorMessage.set('');
         localStorage.setItem('email', email);
 
-        if (resp.rol.name === 'Administrador') {
-          this.router.navigate(['/admin']);
+        if (resp.rol.name === 'ADMIN') {
+          this.router.navigate(['/user/list']);
           return;
         }
 
         if (resp.rol.name === 'Operador') {
-          this.router.navigate(['/admin']);
+          this.router.navigate(['/user/list']);
           return;
         }
 

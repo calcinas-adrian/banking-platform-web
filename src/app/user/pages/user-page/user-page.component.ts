@@ -1,18 +1,21 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   Router,
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
+import { UserService } from '../../../service/user.service';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-user-page',
   imports: [RouterOutlet, RouterLinkActive, RouterLink],
   templateUrl: './user-page.component.html',
 })
-export default class UserPageComponent {
+export default class UserPageComponent implements OnInit {
   private router = inject(Router);
+  private userService = inject(UserService);
 
   listLinks = [
     {
@@ -23,11 +26,20 @@ export default class UserPageComponent {
       name: 'Ver todas las cuentas',
       url: '/account',
     },
-    {
-      name: 'Lista de Usuarios',
-      url: '/user/list',
-    },
   ];
+
+  ngOnInit(): void {
+    const email = localStorage.getItem('email') ?? '';
+    if (!email) {
+      this.router.navigate(['/login']);
+    }
+
+    this.userService.getUserByEmail(email).subscribe((user) => {
+      if (user.rol?.name !== 'ADMIN') {
+        this.router.navigate(['/user/details']);
+      }
+    });
+  }
 
   handleLogout() {
     localStorage.clear();
