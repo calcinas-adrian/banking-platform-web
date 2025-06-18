@@ -15,8 +15,8 @@ export default class BeneficiaryPageComponent {
       icon: 'fas fa-home',
     },
     {
-      name: 'Portfolio',
-      url: '/portfolio',
+      name: 'Detalles de Usuario',
+      url: '/user/details',
       icon: 'fas fa-folder-open',
     },
     {
