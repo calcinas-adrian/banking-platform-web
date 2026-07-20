@@ -1,59 +1,70 @@
-# MyFirstApp
+# Banking Platform Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
+Frontend for the Store Bank banking platform. This Angular 19 application provides the user, operator, account, beneficiary, authentication, and transaction flows for the platform.
 
-## Development server
+## What is included
 
-To start a local development server, run:
+- Authentication and new user registration.
+- User management pages for listing, editing, and viewing user details.
+- Account screens for listing a user's accounts and balances.
+- Beneficiary screens for listing, editing, and viewing beneficiaries.
+- Operator screens for accounts and transactions.
+- Transaction actions backed by the API at `http://localhost:8080/api/v1`.
 
-```bash
-ng serve
-```
+## Prerequisites
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js 18+.
+- npm.
+- The API service available at `http://localhost:8080/api/v1`.
 
-## Code scaffolding
+## Run locally
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+1. Make sure the API service is running and reachable at `http://localhost:8080/api/v1`.
+2. Start the frontend in this folder:
 
 ```bash
-ng build
+npm install
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+3. Open `http://localhost:4200/` in your browser.
 
-## Running unit tests
+## Available scripts
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+| Script | Description |
+|--------|-------------|
+| `npm start` | Starts the Angular development server. |
+| `npm run build` | Builds the application for production. |
+| `npm run watch` | Builds continuously in development mode. |
+| `npm test` | Runs unit tests with Karma. |
 
-```bash
-ng test
-```
+## Application routes
 
-## Running end-to-end tests
+| Route | Purpose |
+|-------|---------|
+| `/auth/login` | Login page. |
+| `/auth/new-user` | User registration page. |
+| `/user/list` | User list. |
+| `/user/edit/:id` | Edit an existing user. |
+| `/user/details` | Current user details. |
+| `/account/list/:userId` | Accounts for a user. |
+| `/beneficiaries/list` | Beneficiary list. |
+| `/beneficiaries/edit/:id` | Edit a beneficiary. |
+| `/beneficiaries/:id` | Beneficiary detail view. |
+| `/operator/accounts` | Operator account overview. |
+| `/operator/transactions` | Operator transaction management. |
 
-For end-to-end (e2e) testing, run:
+## Project structure
 
-```bash
-ng e2e
-```
+- `src/app/auth` authentication pages.
+- `src/app/user` user management.
+- `src/app/account` account views and transfer forms.
+- `src/app/beneficiary` beneficiary screens.
+- `src/app/operator` operator screens.
+- `src/app/service` HTTP services for the backend API.
+- `src/app/models` domain models and DTOs.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Notes
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- The app currently uses a fixed backend base URL in the Angular services.
+- If you change the backend port or host, update the service base URL accordingly.
