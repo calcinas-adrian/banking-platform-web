@@ -6,43 +6,45 @@ import { map, Observable } from 'rxjs';
 import { LoginSuccesfullyResponse } from '../models/dto.response/login.response';
 import { GetUserByEmailResponse } from '../models/dto.response/get-user-by-email.response';
 import { UserListResponse } from '../models/dto.response/user-list.response';
+import { environment } from '../../environments/environment';
+
+const API_URL = `${environment.apiUrl}/v1`;
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private ApiUrl = 'http://localhost:8080/api/v1';
   private http = inject(HttpClient);
 
   getAll() {
-    return this.http.get<UserListResponse[]>(`${this.ApiUrl}/users`);
+    return this.http.get<UserListResponse[]>(`${API_URL}/users`);
   }
 
   getById(id: number) {
-    return this.http.get<User>(`${this.ApiUrl}/users/${id}`);
+    return this.http.get<User>(`${API_URL}/users/${id}`);
   }
   save(user: CreateUserRequest) {
-    return this.http.post<User>(`${this.ApiUrl}/users`, user);
+    return this.http.post<User>(`${API_URL}/users`, user);
   }
 
   update(user: UpdateUserRequest) {
-    return this.http.put<User>(`${this.ApiUrl}/users/${user.id}`, user);
+    return this.http.put<User>(`${API_URL}/users/${user.id}`, user);
   }
 
   deleteById(id: number) {
-    return this.http.delete<any>(`${this.ApiUrl}/users/${id}`);
+    return this.http.delete<any>(`${API_URL}/users/${id}`);
   }
 
   login(email: string, password: string): Observable<LoginSuccesfullyResponse> {
-    return this.http.post<LoginSuccesfullyResponse>(
-      `${this.ApiUrl}/users/login`,
-      { email, password }
-    );
+    return this.http.post<LoginSuccesfullyResponse>(`${API_URL}/users/login`, {
+      email,
+      password,
+    });
   }
 
   getUserByEmail(email: string): Observable<User> {
     return this.http
-      .post<GetUserByEmailResponse>(`${this.ApiUrl}/users/search/email`, {
+      .post<GetUserByEmailResponse>(`${API_URL}/users/search/email`, {
         email,
       })
       .pipe(
@@ -71,7 +73,7 @@ export class UserService {
             changeDate: response.changeDate,
             deleted: response.deleted,
           };
-        })
+        }),
       );
   }
 }

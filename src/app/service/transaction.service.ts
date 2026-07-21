@@ -3,49 +3,51 @@ import { HttpClient } from '@angular/common/http';
 import { Transaction } from '../models';
 import { CreateTransactionRequest } from '../models/dto.request/create-transaction.request';
 import { TransactionResponse } from '../models/dto.response/transaction.response';
+import { environment } from '../../environments/environment';
+
+const API_URL = `${environment.apiUrl}/v1`;
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
-  private ApiUrl = 'http://localhost:8080/api/v1';
   private http = inject(HttpClient);
 
   getAll() {
-    return this.http.get<Transaction[]>(`${this.ApiUrl}/transaction`);
+    return this.http.get<Transaction[]>(`${API_URL}/transaction`);
   }
 
   getById(id: number) {
-    return this.http.get<Transaction>(`${this.ApiUrl}/transaction/${id}`);
+    return this.http.get<Transaction>(`${API_URL}/transaction/${id}`);
   }
 
   create(transaction: CreateTransactionRequest) {
     return this.http.post<TransactionResponse>(
-      `${this.ApiUrl}/transaction`,
-      transaction
+      `${API_URL}/transaction`,
+      transaction,
     );
   }
 
   deleteById(id: number) {
-    return this.http.delete<any>(`${this.ApiUrl}/transaction/${id}`);
+    return this.http.delete<any>(`${API_URL}/transaction/${id}`);
   }
 
   update(transaction: Transaction) {
     return this.http.put<Transaction>(
-      `${this.ApiUrl}/transaction/${transaction.id}`,
-      transaction
+      `${API_URL}/transaction/${transaction.id}`,
+      transaction,
     );
   }
 
   getByAccount(accountId: number) {
     return this.http.get<Transaction[]>(
-      `${this.ApiUrl}/transaction/account/${accountId}`
+      `${API_URL}/transaction/account/${accountId}`,
     );
   }
 
   getByUser(userId: number) {
     return this.http.get<Transaction[]>(
-      `${this.ApiUrl}/transaction/user/${userId}`
+      `${API_URL}/transaction/user/${userId}`,
     );
   }
 }
